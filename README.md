@@ -1,8 +1,10 @@
 # Agentic Fraud Investigator
 
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/RishabhPande/agentic-fraud-investigator/blob/main/demo.py)
+
 A multi-agent fraud investigation system in **pure Python, zero dependencies**.
 Given a transaction alert, a team of specialized agents triages it, gathers
-behavioral evidence, scores the risk, and writes an analyst-style case report —
+behavioral evidence, scores the risk, and writes an analyst-style case report:
 the same workflow a human fraud analyst follows, automated end to end.
 
 ## Architecture
@@ -35,7 +37,7 @@ the same workflow a human fraud analyst follows, automated end to end.
 
 The `Orchestrator` wires the four agents into one pipeline and returns a
 fully populated `Case` object. Each agent is independently testable and
-swappable — the evidence stores are simple in-memory structures, so the
+swappable: the evidence stores are simple in-memory structures, so the
 whole system runs offline with no setup.
 
 ## Quickstart
@@ -65,9 +67,9 @@ python -m unittest discover -s tests
 
 `llm/client.py` defines a tiny `LLMClient` interface with two backends:
 
-- **MockLLM** (default) — deterministic, template-driven reports. Used by tests
+- **MockLLM** (default): deterministic, template-driven reports. Used by tests
   and the demo; everything runs offline.
-- **AnthropicLLM** — real API calls over stdlib `urllib` (no SDK needed).
+- **AnthropicLLM**: real API calls over stdlib `urllib` (no SDK needed).
   Enabled with `AGENT_LLM_BACKEND=anthropic` and `ANTHROPIC_API_KEY` set.
 
 ## Synthetic scenarios
@@ -116,7 +118,7 @@ TOP RISK DRIVERS
 
 ## Design notes
 
-- **No dependencies.** Everything is stdlib — including the Anthropic API
+- **No dependencies.** Everything is stdlib, including the Anthropic API
   client (`urllib`) and the test suite (`unittest`).
 - **Deterministic.** Seeded data generation and a mock LLM mean the demo and
   tests are fully reproducible.
