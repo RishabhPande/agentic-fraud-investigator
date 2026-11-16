@@ -89,7 +89,8 @@ class EvidenceAgent:
 
     def gather(self, alert: Alert) -> list[EvidenceItem]:
         evidence: list[EvidenceItem] = []
-        history = self.transactions.history(alert.account_id)
+        history = [t for t in self.transactions.history(alert.account_id)
+                   if t["timestamp"] <= alert.timestamp]
 
         evidence.append(self._velocity(alert, history))
         evidence.append(self._amount_vs_average(alert, history))
@@ -103,7 +104,7 @@ class EvidenceAgent:
     # -- individual evidence collectors -----------------------------------
 
     def _velocity(self, alert: Alert, history: list[dict]) -> EvidenceItem:
-        recent = [t for t in history if alert.timestamp - t["timestamp"] <= ONE_HOUR]
+        recent = [t for t in history if 0 <= alert.timestamp - t["timestamp"] <= ONE_HOUR]
         n = len(recent)
         if n >= 10:
             signal, value = 1.0, f"{n} transactions in the last hour"
