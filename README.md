@@ -63,6 +63,15 @@ python -m unittest discover -s tests
 | Summarizer | `agents/summarizer.py` | LLM-backed analyst report from the investigated case |
 | Orchestrator | `agents/orchestrator.py` | Runs triage → evidence → score → verdict → summary |
 
+## Transaction-history cutoff
+
+Transaction-based evidence only uses records timestamped at or before the alert.
+The one-hour velocity window includes both endpoints. Future records remain in
+the store for later alerts but do not change an earlier alert's velocity, amount
+baseline or device age. Device-sharing and graph stores have no timestamps and
+are still caller-supplied snapshots, not historical as-of queries. This is an
+offline synthetic teaching pipeline, not a production decision system.
+
 ## LLM backends
 
 `llm/client.py` defines a tiny `LLMClient` interface with two backends:
