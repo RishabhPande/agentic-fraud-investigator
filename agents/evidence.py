@@ -9,6 +9,7 @@ store / graph database; the agent interface stays the same.
 from __future__ import annotations
 
 from collections import defaultdict, deque
+from copy import deepcopy
 
 from models import Alert, EvidenceItem
 
@@ -17,16 +18,16 @@ IMPOSSIBLE_TRAVEL_KMH = 900.0  # faster than any commercial flight
 
 
 class TransactionStore:
-    """account_id -> list of past transactions (dicts)."""
+    """Owned transaction snapshots; reads return independent copies."""
 
     def __init__(self) -> None:
         self._txns: dict[str, list[dict]] = defaultdict(list)
 
     def add(self, account_id: str, txn: dict) -> None:
-        self._txns[account_id].append(txn)
+        self._txns[account_id].append(deepcopy(txn))
 
     def history(self, account_id: str) -> list[dict]:
-        return list(self._txns[account_id])
+        return deepcopy(self._txns[account_id])
 
 
 class DeviceStore:
